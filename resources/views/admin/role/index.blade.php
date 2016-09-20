@@ -91,15 +91,7 @@
                                     </template>
                                 </tbody>
                             </table>
-                            <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite">显示 第@{{pagination.current_page}}页，一页显示@{{pageSize}}条，总数@{{pagination.total}}条</div>
-                            <div class="dataTables_paginate paging_simple_numbers" id="data-table_paginate">
-                                    <a class="paginate_button previous" aria-controls="data-table" data-dt-idx="0" v-bind:class="[ 1 == isActived ? 'disabled' : '']" tabindex="0" id="data-table_previous" @click.prevent="changePage(pagination.current_page - 1,pageSize,name)">上一页</a>
-                                    <span v-for="page in pagesNumber">
-                                        <a class="paginate_button" v-bind:class="[ page == isActived ? 'current' : '']" aria-controls="data-table" data-dt-idx="1" tabindex="0" @click.prevent="changePage(page,pageSize,name)">@{{page}}</a>
-                                    </span>
-                                    <a class="paginate_button next" aria-controls="data-table" data-dt-idx="7" v-bind:class="[ pagination.current_page == pagination.last_page ? 'disabled' : '']" tabindex="0" id="data-table_next" @click.prevent="changePage(pagination.current_page + 1,pageSize,name)">下一页</a>
-                            </div>
-                        </div>
+                            <pagination @change-page="changePage" :pagination.sync="pagination" :offset.sync="offset" :page-size.sync="pageSize" :name.sync="name"></pagination>
                     </div>
                 </div>
             </div>
@@ -167,6 +159,7 @@
 @endsection @section('my-js')
 <script src="/layer/layer.js"></script>
 <script src="/assets/js/ui-modal-notification.demo.min.js"></script>
+<script src="/vue/vue-pagination.js"></script>
 <script>
     $(document).ready(function() {
         App.init();
@@ -215,36 +208,6 @@ var vn = new Vue({
         created: function () {
             this.fetchItems(this.pagination.current_page,this.pageSize,'');
             this.$set('rule',{!! $rule !!});
-        },
-        computed: {
-            /**
-             *  [isActived 判断选中]
-             */
-            isActived: function () {
-                return this.pagination.current_page;
-            },
-            /**
-             *  [pagesNumber 页数]
-             */
-            pagesNumber: function () {
-                if (!this.pagination.to) {
-                    return [];
-                }
-                var from = this.pagination.current_page - this.offset;
-                if (from < 1) {
-                    from = 1;
-                }
-                var to = from + (this.offset * 2);
-                if (to >= this.pagination.last_page) {
-                    to = this.pagination.last_page;
-                }
-                var pagesArray = [];
-                while (from <= to) {
-                    pagesArray.push(from);
-                    from++;
-                }
-                return pagesArray;
-            }
         },
         methods: {
             /**
