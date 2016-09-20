@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-20 15:20:26
+Date: 2016-09-20 23:19:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,13 +64,13 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of permissions
 -- ----------------------------
 INSERT INTO `permissions` VALUES ('1', '0', 'admin.index.manage', '主页管理', '主页管理', '1', 'fa fa-laptop', '1', '2016-09-20 04:42:36', '2016-09-20 04:42:36');
-INSERT INTO `permissions` VALUES ('2', '0', 'admin.rbac.manage', '权限管理', '权限管理', '1', 'fa fa-users', '2', '2016-09-20 04:44:16', '2016-09-20 04:44:16');
+INSERT INTO `permissions` VALUES ('2', '0', 'admin.rbac.manage', '权限管理', '权限管理', '1', 'fa fa-users', '5', '2016-09-20 04:44:16', '2016-09-20 15:08:20');
 INSERT INTO `permissions` VALUES ('3', '1', 'admin.index.index', '后台主页', '后台主页', '1', null, '1', '2016-09-20 04:46:37', '2016-09-20 04:46:37');
 INSERT INTO `permissions` VALUES ('4', '2', 'admin.user.index', '管理员列表', '管理员列表', '1', null, '1', '2016-09-20 04:47:26', '2016-09-20 04:47:26');
 INSERT INTO `permissions` VALUES ('5', '4', 'admin.user.create', '新增管理视图', '新增管理视图', '0', null, '1', '2016-09-20 04:48:57', '2016-09-20 04:48:57');
@@ -94,6 +94,12 @@ INSERT INTO `permissions` VALUES ('22', '20', 'admin.permission.store', '新增�
 INSERT INTO `permissions` VALUES ('23', '20', 'admin.permission.edit', '编辑权限视图', '编辑权限视图', '0', null, '3', '2016-09-20 05:54:40', '2016-09-20 05:54:40');
 INSERT INTO `permissions` VALUES ('24', '20', 'admin.permission.update', '编辑权限操作', '编辑权限操作', '0', null, '4', '2016-09-20 06:06:27', '2016-09-20 06:06:27');
 INSERT INTO `permissions` VALUES ('25', '20', 'admin.permission.destroy', '权限删除', '权限删除', '0', null, '7', '2016-09-20 06:07:02', '2016-09-20 06:07:02');
+INSERT INTO `permissions` VALUES ('26', '0', 'admin.system.manage', '系统管理', '系统管理', '1', 'fa fa-gear', '4', '2016-09-20 14:28:30', '2016-09-20 15:08:40');
+INSERT INTO `permissions` VALUES ('27', '0', 'admin.article.manage', '文章管理', '文章管理', '1', 'fa fa-file-text', '3', '2016-09-20 14:43:37', '2016-09-20 15:08:58');
+INSERT INTO `permissions` VALUES ('28', '27', 'admin.category.index', '分类列表', '分类列表', '1', null, '1', '2016-09-20 15:03:56', '2016-09-20 15:03:56');
+INSERT INTO `permissions` VALUES ('29', '27', 'admin.article.index', '文章列表', '文章列表', '1', null, '2', '2016-09-20 15:05:10', '2016-09-20 15:05:10');
+INSERT INTO `permissions` VALUES ('30', '0', 'admin.website.manage', '网站管理', '网站管理', '1', 'fa fa-windows', '2', '2016-09-20 15:07:58', '2016-09-20 15:07:58');
+INSERT INTO `permissions` VALUES ('31', '30', 'admin.config.index', '基本配置', '基本配置', '1', '', '1', '2016-09-20 15:10:36', '2016-09-20 15:10:36');
 
 -- ----------------------------
 -- Table structure for permission_role
@@ -139,6 +145,12 @@ INSERT INTO `permission_role` VALUES ('22', '1');
 INSERT INTO `permission_role` VALUES ('23', '1');
 INSERT INTO `permission_role` VALUES ('24', '1');
 INSERT INTO `permission_role` VALUES ('25', '1');
+INSERT INTO `permission_role` VALUES ('26', '1');
+INSERT INTO `permission_role` VALUES ('27', '1');
+INSERT INTO `permission_role` VALUES ('28', '1');
+INSERT INTO `permission_role` VALUES ('29', '1');
+INSERT INTO `permission_role` VALUES ('30', '1');
+INSERT INTO `permission_role` VALUES ('31', '1');
 
 -- ----------------------------
 -- Table structure for roles
@@ -176,7 +188,6 @@ CREATE TABLE `role_user` (
 -- Records of role_user
 -- ----------------------------
 INSERT INTO `role_user` VALUES ('1', '1');
-INSERT INTO `role_user` VALUES ('3', '1');
 INSERT INTO `role_user` VALUES ('3', '3');
 
 -- ----------------------------
@@ -198,6 +209,5 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', 'w2aXujAvOGnhfgL70v9zWQKw7yKbTiEgnx8muwePwKuYvILq4tULc9dxNMVh', '2016-09-01 08:17:57', '2016-09-20 06:33:22');
+INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', 'ogH6GmJpAEXEIZcgPLOOIrZjs0ohf7Ng1NCrcTLhTWYntdJcdFv9BOyrF9ST', '2016-09-01 08:17:57', '2016-09-20 15:11:08');
 INSERT INTO `users` VALUES ('3', 'demo', 'demo@demo.com', '$2y$10$nvd0j6ZlGrX9q9SdLg/dZeN8iYUpezixZtPdmfkTVDeZZFyLmYFDa', 'V1q5m5bpjy8azgRVvJoeHzF55uiHYdp0OCJsOm1Bi7KyMkQEcqha6E7tLGIq', '2016-09-20 03:22:26', '2016-09-20 06:51:35');
-INSERT INTO `users` VALUES ('4', 'test', 'test@test.com', '$2y$10$m8ophfQ7FFpdmP1Xc2UVau/IEp31Zgg8trJLYomeUngWWJGMdZ5JO', null, '2016-09-20 07:15:42', '2016-09-20 07:15:42');

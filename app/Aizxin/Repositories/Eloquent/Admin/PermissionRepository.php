@@ -122,7 +122,7 @@ class PermissionRepository extends Repository
 		   ->where(function($query){
 		        $query->where('parent_id',0);
 		    })
-		   ->orderBy("id",'asc')
+		   ->orderBy("sort",'asc')
 		   ->paginate($request['pageSize'])
 		   ->toArray();
 		if(count($results['data'])){
