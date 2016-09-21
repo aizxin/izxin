@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-20 23:19:24
+Date: 2016-09-21 20:47:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -145,12 +145,6 @@ INSERT INTO `permission_role` VALUES ('22', '1');
 INSERT INTO `permission_role` VALUES ('23', '1');
 INSERT INTO `permission_role` VALUES ('24', '1');
 INSERT INTO `permission_role` VALUES ('25', '1');
-INSERT INTO `permission_role` VALUES ('26', '1');
-INSERT INTO `permission_role` VALUES ('27', '1');
-INSERT INTO `permission_role` VALUES ('28', '1');
-INSERT INTO `permission_role` VALUES ('29', '1');
-INSERT INTO `permission_role` VALUES ('30', '1');
-INSERT INTO `permission_role` VALUES ('31', '1');
 
 -- ----------------------------
 -- Table structure for roles
