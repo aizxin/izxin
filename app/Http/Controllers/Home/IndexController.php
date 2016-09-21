@@ -11,6 +11,7 @@ class IndexController extends Controller
 {
     public function index()
     {
+        dd(md5('<{wk517???}>'));
         return view('welcome');
     }
 }

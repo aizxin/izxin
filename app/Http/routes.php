@@ -32,6 +32,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
         Route::post('user/store', 'UserController@store')->name('admin.user.store');
         Route::post('user/role', 'UserController@role')->name('admin.user.role');
         Route::resource('user','UserController');
+        // 网站信息
+        Route::resource('config','ConfigController');
     });
 });
 

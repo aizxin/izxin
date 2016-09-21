@@ -31,22 +31,13 @@
                         <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
                             <div class="dataTables_length" id="data-table_length">
                                 <label>显示
-                                    <select name="data-table_length" aria-controls="data-table" class="" v-on:change="changePageSize(pageSize,name)" v-model="pageSize">
-                                        <option value="10" selected>10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
+                                    <vue-select @change-page="fetchItems" :pagination.sync="pagination" :page-size.sync="pageSize" :name.sync="name"></vue-select>
                                     @permission('admin.role.create')
                                     <a href="{{url('admin/role/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">角色添加</a>
                                     @endpermission
                                 </label>
                             </div>
-                            <div id="data-table_filter" class="dataTables_filter">
-                                <label>查询:
-                                <input type="search" class="" placeholder="只能查角色名" aria-controls="data-table" v-model="name" v-on:change="changeName(name)">
-                                </label>
-                            </div>
+                            <vue-input @change-page="fetchItems" :pagination.sync="pagination" :page-size.sync="pageSize" :name.sync="name" :title="title"></vue-input>
                             <table id="data-table" class="table table-bordered dataTable no-footer" role="grid" aria-describedby="data-table_info">
                                 <thead>
                                     <tr role="row">
@@ -91,7 +82,7 @@
                                     </template>
                                 </tbody>
                             </table>
-                            <pagination @change-page="changePage" :pagination.sync="pagination" :offset.sync="offset" :page-size.sync="pageSize" :name.sync="name"></pagination>
+                            <pagination @change-page="fetchItems" :pagination.sync="pagination" :offset.sync="offset" :page-size.sync="pageSize" :name.sync="name"></pagination>
                     </div>
                 </div>
             </div>
@@ -203,7 +194,8 @@ var vn = new Vue({
             pageSize:10,
             name:'',
             rule:[],
-            role:{}
+            role:{},
+            title:'只能查角色名'
         },
         created: function () {
             this.fetchItems(this.pagination.current_page,this.pageSize,'');
@@ -214,6 +206,7 @@ var vn = new Vue({
              *  [fetchItems 获取权限]
              */
             fetchItems: function (page,pageSize,name) {
+                this.pagination.current_page = page;
                 var data = {page: page,pageSize:pageSize,display_name:name};
                 this.$http.post("{{url('admin/role/index')}}", data).then(function (response) {
                     this.$set('items', response.data.result.data);
@@ -221,30 +214,6 @@ var vn = new Vue({
                 }, function (error) {
                     console.log("系统错误");
                 });
-            },
-            /**
-             *  [changePage 监听页数]
-             */
-            changePage: function (page,pageSize,name) {
-                this.pagination.current_page = page;
-                this.fetchItems(page,pageSize,name);
-            },
-            /**
-             *  [changePageSize 监听条数]
-             */
-            changePageSize: function (pageSize,name){
-                this.pagination.current_page = 1;
-                this.pageSize = pageSize;
-                this.name = '';
-                this.fetchItems(this.pagination.current_page,pageSize,'');
-            },
-            /**
-             *  [changeName 监听name]
-             */
-            changeName: function (name){
-                this.pagination.current_page = 1;
-                this.name = name;
-                this.fetchItems(this.pagination.current_page,this.pageSize,name);
             },
             /**
              *  [destroy 删除权限]
