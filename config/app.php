@@ -162,6 +162,9 @@ return [
         // 验证自定义
         App\Providers\IzxinValidatorServiceProvider::class,
 
+        // 七牛
+        zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
+
     ],
 
     /*

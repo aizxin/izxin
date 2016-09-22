@@ -11,6 +11,7 @@ class EntrustSetupTables extends Migration
      */
     public function up()
     {
+        // $this->down();
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');

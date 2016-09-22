@@ -160,7 +160,7 @@
                     }
                 },
                 createNode: function (data){
-                    this.$http.post("{{url('/admin/permission/store')}}",data).then(function (response){
+                    this.$http.post("{{url('/admin/permission')}}",data).then(function (response){
                         if(response.data.code == 400){
                             this.msg = response.data.message
                         }

@@ -55,7 +55,10 @@ class PermissionRepository extends Repository
 	 */
 	public function getPermissionParent($parent = 0)
 	{
-		return $this->menu('is_menu',1);
+		if (Cache::has(config('admin.globals.cache.menu'))) {
+		    return Cache::get(config('admin.globals.cache.menu'));
+		}
+		return $this->getMenu();
 	}
 	/**
 	 *  [menu description]
@@ -171,9 +174,6 @@ class PermissionRepository extends Repository
 	 */
 	public function getMenu()
 	{
-		if (Cache::has(config('admin.globals.cache.menu'))) {
-		    return Cache::get(config('admin.globals.cache.menu'));
-		}
 		$data = $this->menu('is_menu',1);
         // 缓存菜单数据
 		Cache::forever(config('admin.globals.cache.menu'),$data);

@@ -127,7 +127,7 @@
                     }
                 },
                 createUser: function (data){
-                    this.$http.post("{{url('/admin/user/store')}}",data).then(function (response){
+                    this.$http.post("{{url('/admin/user')}}",data).then(function (response){
                         console.log(response.data)
                         if(response.data.code == 400){
                             this.msg = response.data.message

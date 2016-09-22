@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ConfigController extends Controller
+class ArticleController extends Controller
 {
     /**
      *  [$service 服务]
@@ -33,7 +33,7 @@ class ConfigController extends Controller
      */
     public function index(Request $request)
     {
-    	return view('admin.config.index');
+
     }
     public function show($id){
     }

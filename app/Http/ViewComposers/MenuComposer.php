@@ -32,6 +32,6 @@ class MenuComposer
      */
     public function compose(View $view)
     {
-        $view->with('slidebar', $this->menu->getMenu());
+        $view->with('slidebar', $this->menu->getPermissionParent());
     }
 }

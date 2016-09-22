@@ -10,10 +10,38 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-21 20:47:31
+Date: 2016-09-22 13:59:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for config
+-- ----------------------------
+DROP TABLE IF EXISTS `config`;
+CREATE TABLE `config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `name` varchar(50) DEFAULT NULL COMMENT '字段名称',
+  `code` varchar(20) DEFAULT NULL COMMENT '字段代码',
+  `type` char(10) DEFAULT NULL COMMENT '字段类型',
+  `content` text,
+  `sort` int(11) DEFAULT '0' COMMENT '字段排序',
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of config
+-- ----------------------------
+INSERT INTO `config` VALUES ('1', '商城名称', 'mallName', 'text', '最云南', '1', '0', '0');
+INSERT INTO `config` VALUES ('2', '商城标题', 'mallTitle', 'text', '最云南', '2', '0', '0');
+INSERT INTO `config` VALUES ('3', '商城描述', 'mallDesc', 'text', '最云南,最云南', '3', '0', '0');
+INSERT INTO `config` VALUES ('4', '商城关键字', 'mallKeywords', 'text', '最云南', '4', '0', '0');
+INSERT INTO `config` VALUES ('5', '商城Logo', 'mallLogo', 'upload', '/static/mallLogo/20160812/ee4d4459b3369d962ee7d68a0b88473e.jpg', '5', '0', '0');
+INSERT INTO `config` VALUES ('6', '底部设置', 'mallFooter', 'textarea', '<p>版权所有  最云南社有限公司</p>\n  <p>滇ICP证 16097834</p>\n  <p>2015 All copyrights by Kunming spring tour CO，ITd</p>', '6', '0', '0');
+INSERT INTO `config` VALUES ('7', '联系电话', 'phoneNo', 'text', '4008627098', '7', '0', '0');
+INSERT INTO `config` VALUES ('8', 'QQ', 'qqNo', 'text', '772947665', '8', '0', '0');
 
 -- ----------------------------
 -- Table structure for migrations
@@ -64,7 +92,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of permissions
@@ -100,6 +128,11 @@ INSERT INTO `permissions` VALUES ('28', '27', 'admin.category.index', '分类列
 INSERT INTO `permissions` VALUES ('29', '27', 'admin.article.index', '文章列表', '文章列表', '1', null, '2', '2016-09-20 15:05:10', '2016-09-20 15:05:10');
 INSERT INTO `permissions` VALUES ('30', '0', 'admin.website.manage', '网站管理', '网站管理', '1', 'fa fa-windows', '2', '2016-09-20 15:07:58', '2016-09-20 15:07:58');
 INSERT INTO `permissions` VALUES ('31', '30', 'admin.config.index', '基本配置', '基本配置', '1', '', '1', '2016-09-20 15:10:36', '2016-09-20 15:10:36');
+INSERT INTO `permissions` VALUES ('32', '28', 'admin.category.create', '新增分类视图', '新增分类视图', '0', null, '1', '2016-09-22 05:39:40', '2016-09-22 05:41:31');
+INSERT INTO `permissions` VALUES ('33', '28', 'admin.category.store', '新增分类操作', '新增分类操作', '0', null, '2', '2016-09-22 05:41:13', '2016-09-22 05:41:13');
+INSERT INTO `permissions` VALUES ('34', '28', 'admin.category.edit', '编辑分类视图', '编辑分类视图', '0', null, '3', '2016-09-22 05:42:57', '2016-09-22 05:42:57');
+INSERT INTO `permissions` VALUES ('35', '28', 'admin.category.update', '编辑分类操作', '编辑分类操作', '0', null, '4', '2016-09-22 05:44:12', '2016-09-22 05:44:12');
+INSERT INTO `permissions` VALUES ('36', '28', 'admin.category.destroy', '分类删除', '分类删除', '0', null, '5', '2016-09-22 05:44:56', '2016-09-22 05:44:56');
 
 -- ----------------------------
 -- Table structure for permission_role
@@ -159,13 +192,14 @@ CREATE TABLE `roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES ('1', 'admin', '超级管理员', '系统的管理员', '2016-09-16 15:59:50', '2016-09-16 15:59:54');
 INSERT INTO `roles` VALUES ('3', 'demo', '测试', '测试', '2016-09-19 05:38:24', '2016-09-20 06:08:48');
+INSERT INTO `roles` VALUES ('6', 'test555', 'test555', 'test55', '2016-09-22 05:27:36', '2016-09-22 05:28:14');
 
 -- ----------------------------
 -- Table structure for role_user
@@ -182,6 +216,7 @@ CREATE TABLE `role_user` (
 -- Records of role_user
 -- ----------------------------
 INSERT INTO `role_user` VALUES ('1', '1');
+INSERT INTO `role_user` VALUES ('3', '1');
 INSERT INTO `role_user` VALUES ('3', '3');
 
 -- ----------------------------
@@ -198,10 +233,13 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', 'ogH6GmJpAEXEIZcgPLOOIrZjs0ohf7Ng1NCrcTLhTWYntdJcdFv9BOyrF9ST', '2016-09-01 08:17:57', '2016-09-20 15:11:08');
+INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', 'w2aXujAvOGnhfgL70v9zWQKw7yKbTiEgnx8muwePwKuYvILq4tULc9dxNMVh', '2016-09-01 08:17:57', '2016-09-20 06:33:22');
 INSERT INTO `users` VALUES ('3', 'demo', 'demo@demo.com', '$2y$10$nvd0j6ZlGrX9q9SdLg/dZeN8iYUpezixZtPdmfkTVDeZZFyLmYFDa', 'V1q5m5bpjy8azgRVvJoeHzF55uiHYdp0OCJsOm1Bi7KyMkQEcqha6E7tLGIq', '2016-09-20 03:22:26', '2016-09-20 06:51:35');
+INSERT INTO `users` VALUES ('4', 'test', 'test@test.com', '$2y$10$m8ophfQ7FFpdmP1Xc2UVau/IEp31Zgg8trJLYomeUngWWJGMdZ5JO', null, '2016-09-20 07:15:42', '2016-09-20 07:15:42');
+INSERT INTO `users` VALUES ('5', 'test44', 'test44@test.com', '$2y$10$9zrWnAH.LhK2RiDbYy1AGO3zcpSRzQpGAiBEItWhl3T/H0sET5KyS', null, '2016-09-22 05:21:27', '2016-09-22 05:21:27');
+INSERT INTO `users` VALUES ('6', 'test55', 'test55@admin.com', '$2y$10$4dUW.wEcYAOqL9ZhhvVQIeyXH4H/B.IO4Slut5lcyemlzclI7H4bW', null, '2016-09-22 05:25:46', '2016-09-22 05:25:46');

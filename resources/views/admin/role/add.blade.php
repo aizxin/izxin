@@ -118,7 +118,7 @@
                     }
                 },
                 createNode: function (data){
-                    this.$http.post("{{url('/admin/role/store')}}",data).then(function (response){
+                    this.$http.post("{{url('/admin/role')}}",data).then(function (response){
                         console.log(response.data)
                         if(response.data.code == 400){
                             this.msg = response.data.message

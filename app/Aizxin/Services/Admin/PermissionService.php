@@ -48,6 +48,7 @@ class PermissionService extends CommonService
                 }
                 return $this->respondWithErrors('添加失败',400);
             }
+            $this->repository->getMenu();
         } catch (ValidatorException $e) {
             return $this->respondWithErrors( $e->getMessageBag()->first() , 422);
         }
