@@ -147,6 +147,7 @@
     </div>
     <!-- end row -->
 </div>
+</div>
 @endsection @section('my-js')
 <script src="/layer/layer.js"></script>
 <script src="/assets/js/ui-modal-notification.demo.min.js"></script>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Aizxin\Services\Admin\ArticleService;
 
 class ArticleController extends Controller
 {
@@ -22,7 +23,9 @@ class ArticleController extends Controller
      *  @DateTime 2016-09-15T00:12:46+0800
      *  @param    AuthService              $service [description]
      */
-    public function __construct(){
+    public function __construct(ArticleService $service)
+    {
+        $this->service = $service;
     }
     /**
      *  [index 网站信息]
@@ -33,12 +36,16 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-
+        if($request->ajax()){
+            // return $this->service->findByParent();
+        }
+        return view('admin.article.index');
     }
     public function show($id){
     }
     public function create()
     {
+        return view('admin.article.add');
     }
     public function store(Request $request)
     {
@@ -52,7 +59,17 @@ class ArticleController extends Controller
     public function update(Request $request,$id)
     {
     }
-    public function role(Request $request)
+    /**
+     *  [upload markdown 图片上传]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-23T18:06:06+0800
+     *  @param    Request                  $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function upload(Request $request)
     {
+        $response =  $this->service->upload($request);
+        return response()->json($response);
     }
 }

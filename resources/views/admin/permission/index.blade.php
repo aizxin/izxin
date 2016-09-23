@@ -126,6 +126,7 @@
     </div>
     <!-- end row -->
 </div>
+</div>
 @endsection @section('my-js')
 <script src="/layer/layer.js"></script>
 <script src="/vue/vue-pagination.js"></script>

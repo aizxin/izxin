@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-22 23:27:27
+Date: 2016-09-23 16:47:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,17 +46,26 @@ CREATE TABLE `categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '分类关系',
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '分类描述',
   `sort` tinyint(4) NOT NULL DEFAULT '0' COMMENT '排序',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `categories_name_unique` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of categories
 -- ----------------------------
+INSERT INTO `categories` VALUES ('1', '0', '前端开发', '', '1', '1', '2016-09-23 03:28:00', '2016-09-23 07:58:44');
+INSERT INTO `categories` VALUES ('2', '0', '后端', '', '2', '1', '2016-09-23 04:01:05', '2016-09-23 04:01:05');
+INSERT INTO `categories` VALUES ('3', '0', '数据库', '', '3', '1', '2016-09-23 04:03:30', '2016-09-23 04:03:30');
+INSERT INTO `categories` VALUES ('4', '0', '运维&测试', '', '4', '1', '2016-09-23 04:05:14', '2016-09-23 04:05:14');
+INSERT INTO `categories` VALUES ('11', '2', 'php', '', '1', '1', '2016-09-23 07:59:50', '2016-09-23 07:59:50');
+INSERT INTO `categories` VALUES ('6', '1', 'html', '', '1', '1', '2016-09-23 04:09:29', '2016-09-23 04:09:29');
+INSERT INTO `categories` VALUES ('7', '1', 'vue', '', '2', '1', '2016-09-23 04:10:43', '2016-09-23 04:10:43');
+INSERT INTO `categories` VALUES ('9', '1', 'react', '', '3', '1', '2016-09-23 06:12:11', '2016-09-23 06:12:11');
 
 -- ----------------------------
 -- Table structure for configs
@@ -128,7 +137,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of permissions
@@ -169,6 +178,11 @@ INSERT INTO `permissions` VALUES ('33', '28', 'admin.category.store', '新增分
 INSERT INTO `permissions` VALUES ('34', '28', 'admin.category.edit', '编辑分类视图', '编辑分类视图', '0', null, '3', '2016-09-22 05:42:57', '2016-09-22 05:42:57');
 INSERT INTO `permissions` VALUES ('35', '28', 'admin.category.update', '编辑分类操作', '编辑分类操作', '0', null, '4', '2016-09-22 05:44:12', '2016-09-22 05:44:12');
 INSERT INTO `permissions` VALUES ('36', '28', 'admin.category.destroy', '分类删除', '分类删除', '0', null, '5', '2016-09-22 05:44:56', '2016-09-22 05:44:56');
+INSERT INTO `permissions` VALUES ('37', '29', 'admin.article.create', '新增文章视图', '新增文章视图', '0', null, '1', '2016-09-23 08:42:02', '2016-09-23 08:42:02');
+INSERT INTO `permissions` VALUES ('38', '29', 'admin.article.store', '新增文章操作', '新增文章操作', '0', null, '2', '2016-09-23 08:42:54', '2016-09-23 08:42:54');
+INSERT INTO `permissions` VALUES ('39', '29', 'admin.article.edit', '编辑文章视图', '编辑文章视图', '0', null, '3', '2016-09-23 08:44:21', '2016-09-23 08:44:21');
+INSERT INTO `permissions` VALUES ('40', '29', 'admin.article.update', '编辑文章操作', '编辑文章操作', '0', null, '4', '2016-09-23 08:45:26', '2016-09-23 08:45:26');
+INSERT INTO `permissions` VALUES ('41', '29', 'admin.article.destroy', '文章删除', '文章删除', '0', null, '1', '2016-09-23 08:46:22', '2016-09-23 08:46:22');
 
 -- ----------------------------
 -- Table structure for permission_role
@@ -214,6 +228,14 @@ INSERT INTO `permission_role` VALUES ('22', '1');
 INSERT INTO `permission_role` VALUES ('23', '1');
 INSERT INTO `permission_role` VALUES ('24', '1');
 INSERT INTO `permission_role` VALUES ('25', '1');
+INSERT INTO `permission_role` VALUES ('27', '1');
+INSERT INTO `permission_role` VALUES ('28', '1');
+INSERT INTO `permission_role` VALUES ('29', '1');
+INSERT INTO `permission_role` VALUES ('32', '1');
+INSERT INTO `permission_role` VALUES ('33', '1');
+INSERT INTO `permission_role` VALUES ('34', '1');
+INSERT INTO `permission_role` VALUES ('35', '1');
+INSERT INTO `permission_role` VALUES ('36', '1');
 
 -- ----------------------------
 -- Table structure for roles
@@ -228,7 +250,7 @@ CREATE TABLE `roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of roles
@@ -236,6 +258,8 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` VALUES ('1', 'admin', '超级管理员', '系统的管理员', '2016-09-16 15:59:50', '2016-09-16 15:59:54');
 INSERT INTO `roles` VALUES ('3', 'demo', '测试', '测试', '2016-09-19 05:38:24', '2016-09-20 06:08:48');
 INSERT INTO `roles` VALUES ('6', 'test555', 'test555', 'test55', '2016-09-22 05:27:36', '2016-09-22 05:28:14');
+INSERT INTO `roles` VALUES ('7', '555', '5555', '5555', '2016-09-23 07:31:56', '2016-09-23 07:31:56');
+INSERT INTO `roles` VALUES ('8', '9999', '9999', '9999', '2016-09-23 07:42:49', '2016-09-23 07:42:49');
 
 -- ----------------------------
 -- Table structure for role_user
@@ -269,7 +293,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of users

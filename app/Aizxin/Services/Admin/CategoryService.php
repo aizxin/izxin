@@ -32,7 +32,7 @@ class CategoryService extends CommonService
         $this->validator = $validator;
     }
     /**
-     *  [create 管理员添加和更新]
+     *  [create 分类添加和更新]
      *  izxin.com
      *  @author qingfeng
      *  @DateTime 2016-09-19T22:58:20+0800
@@ -74,5 +74,20 @@ class CategoryService extends CommonService
     {
         $data = $this->repository->getCateList();
         return $this->respondWithSuccess(count($data) > 0 ? $data : [], '添加成功');
+    }
+    /**
+     *  [destroy 删除分类]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-17T17:18:37+0800
+     *  @param    [type]                   $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function destroy($id)
+    {
+        if($this->repository->destroyCate($id) !== false){
+            return $this->respondWithSuccess(1, '删除成功');
+        }
+        return $this->respondWithErrors('有子分类,不能删除',400);
     }
 }

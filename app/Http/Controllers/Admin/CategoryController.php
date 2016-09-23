@@ -27,7 +27,7 @@ class CategoryController extends Controller
         $this->service = $service;
     }
     /**
-     *  [index 菜单信息]
+     *  [index 分类信息]
      *  izxin.com
      *  @author qingfeng
      *  @DateTime 2016-09-19T10:29:18+0800
@@ -60,14 +60,29 @@ class CategoryController extends Controller
     public function edit($id)
     {
     }
+    /**
+     *  [destroy 分类删除]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-23T15:35:41+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
     public function destroy($id)
     {
-
+        return $this->service->destroy($id);
     }
+    /**
+     *  [update 分类更新]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-23T14:19:23+0800
+     *  @param    Request                  $request [description]
+     *  @param    [type]                   $id      [description]
+     *  @return   [type]                            [description]
+     */
     public function update(Request $request,$id)
     {
-    }
-    public function role(Request $request)
-    {
+        return $this->service->create($request);
     }
 }

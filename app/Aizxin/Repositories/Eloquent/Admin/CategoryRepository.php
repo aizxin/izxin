@@ -76,4 +76,25 @@ class CategoryRepository extends Repository
 		}
 		return $this->getCate();
 	}
+	/**
+	 *  [destroyCate 分类删除]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-23T14:51:17+0800
+	 *  @param    [type]                   $id [description]
+	 *  @return   [type]                       [description]
+	 */
+	public function destroyCate($id)
+	{
+		$childNum = $this->model->where('parent_id',$id)->count();
+		if($childNum > 0){
+			return false;
+		}
+		$isDelete = $this->model->destroy($id);
+    	if ($isDelete) {
+    		$this->getCate();
+			return true;
+    	}
+    	return false;
+	}
 }

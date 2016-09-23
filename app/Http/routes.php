@@ -14,6 +14,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
     Route::post('login', 'AuthController@postLogin');
     // 注销
     Route::get('logout', 'AuthController@logout')->name('admin.logout');
+    // markdown 图片上传
+    Route::post('article/upload', 'ArticleController@upload');
     // 已经登录
     Route::group(['middleware' => ['admin.auth','role.auth:admin']], function () {
         // 后台首页
