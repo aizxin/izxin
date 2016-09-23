@@ -29,12 +29,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
         Route::any('user/index', 'UserController@index')->name('admin.user.index');
         Route::post('user/role', 'UserController@role')->name('admin.user.role');
         Route::resource('user','UserController');
-        // 网站信息
-        Route::resource('config','ConfigController');
         // 分类
+        Route::any('category/index', 'CategoryController@index')->name('admin.category.index');
         Route::resource('category','CategoryController');
         // 文章
         Route::resource('article','ArticleController');
+        // 网站信息
+        Route::resource('config','ConfigController');
     });
 });
 

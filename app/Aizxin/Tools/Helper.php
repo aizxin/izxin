@@ -12,11 +12,11 @@ if (! function_exists('foo')) {
         return "foo";
     }
 }
-if (! function_exists('sortMenu')) {
+if (! function_exists('sort_parent')) {
     /**
      *  [sortMenu description]
      */
-    function sortMenu($menus,$pid=0)
+    function sort_parent($menus,$pid=0)
     {
         $arr = [];
         if (empty($menus)) {
@@ -25,7 +25,7 @@ if (! function_exists('sortMenu')) {
         foreach ($menus as $key => $v) {
             if ($v['parent_id'] == $pid) {
                 $arr[$key] = $v;
-                $arr[$key]['child'] = sortMenu($menus,$v['id']);
+                $arr[$key]['child'] = sort_parent($menus,$v['id']);
             }
         }
         return $arr;

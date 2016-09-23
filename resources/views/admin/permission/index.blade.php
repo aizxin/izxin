@@ -177,7 +177,7 @@ var vn = new Vue({
              *  [destroy 删除权限]
              */
             destroy:function (id){
-                layer.confirm('确认删除权限', {icon: 1, title:'提示'}, function(index){
+                layer.confirm('确认删除权限', {icon: 1, title:'删除权限'}, function(index){
                     vn.$http.delete("{{url('admin/permission')}}/"+id).then(function(response){
                         if(response.data.code == 400){
                             layer.close(index);

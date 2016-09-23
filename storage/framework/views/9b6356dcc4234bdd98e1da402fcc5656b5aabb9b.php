@@ -1,4 +1,4 @@
-@extends('layouts.admin') @section('content')
+ <?php $__env->startSection('content'); ?>
 <div id="content" class="content">
     <!-- begin breadcrumb -->
     <ol class="breadcrumb pull-right">
@@ -32,9 +32,9 @@
                             <div class="dataTables_length" id="data-table_length">
                                 <label>显示
                                     <vue-select @change-page="fetchItems" :pagination.sync="pagination" :page-size.sync="pageSize" :name.sync="name"></vue-select>
-                                    @permission('admin.user.create')
-                                    <a href="{{url('admin/user/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
-                                    @endpermission
+                                    <?php if (\Entrust::can('admin.user.create')) : ?>
+                                    <a href="<?php echo e(url('admin/user/create')); ?>"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
+                                    <?php endif; // Entrust::can ?>
                                 </label>
                             </div>
                             <vue-input @change-page="fetchItems" :pagination.sync="pagination" :page-size.sync="pageSize" :name.sync="name" :title="title"></vue-input>
@@ -56,30 +56,30 @@
                                 <tbody>
                                     <template v-for="vo in items">
                                         <tr class="gradeA odd" role="row" >
-                                            <td class="sorting_1">@{{vo.id}}</td>
-                                            <td>@{{vo.name}}</td>
-                                            <td>@{{vo.email}}</td>
+                                            <td class="sorting_1">{{vo.id}}</td>
+                                            <td>{{vo.name}}</td>
+                                            <td>{{vo.email}}</td>
                                             <td>
-                                                @permission('admin.user.show')
+                                                <?php if (\Entrust::can('admin.user.show')) : ?>
                                                 <a type="button" class="btn btn-success" @click="userRole(vo.id)" href="#modal-dialog" data-toggle="modal">
                                                 <i class="fa fa-user"></i>
                                                 <span>修改角色</span>
                                                 </a>
-                                                 @endpermission
+                                                 <?php endif; // Entrust::can ?>
                                             </td>
                                             <td>
-                                                @permission('admin.user.edit')
-                                                <a href="{{url('admin/user')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
+                                                <?php if (\Entrust::can('admin.user.edit')) : ?>
+                                                <a href="<?php echo e(url('admin/user')); ?>/{{vo.id}}/edit" class="btn btn-primary delete">
                                                 <i class="fa fa-edit"></i>
                                                 <span>修改</span>
                                                 </a>
-                                                 @endpermission
-                                                 @permission('admin.user.destroy')
+                                                 <?php endif; // Entrust::can ?>
+                                                 <?php if (\Entrust::can('admin.user.destroy')) : ?>
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     <span>删除</span>
                                                 </button>
-                                                @endpermission
+                                                <?php endif; // Entrust::can ?>
                                             </td>
                                         </tr>
                                     </template>
@@ -100,7 +100,7 @@
                             <div class="container" style="width: 100%">
                                 <select class="form-control selectpicker input" data-size="10" v-model="user.role_id" data-live-search="true" data-style="btn-white">
                                         <option v-bind:value="0">角色分配</option>
-                                        <option v-bind:value="vo.id" v-for="vo in role">@{{vo.display_name}}</option>
+                                        <option v-bind:value="vo.id" v-for="vo in role">{{vo.display_name}}</option>
                                     </select>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
     </div>
     <!-- end row -->
 </div>
-@endsection @section('my-js')
+<?php $__env->stopSection(); ?> <?php $__env->startSection('my-js'); ?>
 <script src="/layer/layer.js"></script>
 <script src="/vue/vue-pagination.js"></script>
 <script>
@@ -130,7 +130,7 @@ var vn = new Vue({
         http: {
             root: '/root',
             headers: {
-                'X-CSRF-TOKEN': "{{csrf_token()}}"
+                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
             }
         },
         el: '#user',
@@ -153,7 +153,7 @@ var vn = new Vue({
         },
         created: function () {
             this.fetchItems(this.pagination.current_page,this.pageSize,'');
-            this.$set('role',{!! $role !!});
+            this.$set('role',<?php echo $role; ?>);
         },
         methods: {
             /**
@@ -162,7 +162,7 @@ var vn = new Vue({
             fetchItems: function (page,pageSize,name) {
                 this.pagination.current_page = page;
                 var data = {page: page,pageSize:pageSize,name:name};
-                this.$http.post("{{url('admin/user/index')}}", data).then(function (response) {
+                this.$http.post("<?php echo e(url('admin/user/index')); ?>", data).then(function (response) {
                     this.$set('items', response.data.result.data);
                     this.$set('pagination', response.data.result.pagination);
                 }, function (error) {
@@ -174,7 +174,7 @@ var vn = new Vue({
              */
             destroy:function (id){
                 layer.confirm('确认删除权限', {icon: 1, title:'提示'}, function(index){
-                    vn.$http.delete("{{url('admin/user')}}/"+id).then(function(response){
+                    vn.$http.delete("<?php echo e(url('admin/user')); ?>/"+id).then(function(response){
                         if(response.data.code == 400){
                             layer.close(index);
                             layer.msg(response.data.message);
@@ -200,7 +200,7 @@ var vn = new Vue({
             userRole: function (id){
                 this.user.user_id = id;
                 this.$set('user.role_id',0)
-                this.$http.get("{{url('admin/user')}}/"+id).then(function (response) {
+                this.$http.get("<?php echo e(url('admin/user')); ?>/"+id).then(function (response) {
                     if(response.data.result.length > 0){
                         this.$set('user.role_id',response.data.result[0].id)
                     }
@@ -213,7 +213,7 @@ var vn = new Vue({
              */
             addRole: function (){
                 this.user.roles.push(this.user.role_id);
-                this.$http.post("{{url('admin/user/role')}}",this.user).then(function (response) {
+                this.$http.post("<?php echo e(url('admin/user/role')); ?>",this.user).then(function (response) {
                     if(response.data.code == 200){
                         var ii = layer.load();
                         //此处用setTimeout演示ajax的回调
@@ -232,4 +232,5 @@ var vn = new Vue({
             }
         }
     });
-</script> @endsection
+</script> <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

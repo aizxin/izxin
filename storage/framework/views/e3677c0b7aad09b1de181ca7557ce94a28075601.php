@@ -1,5 +1,4 @@
-@extends('layouts.admin')
-@section('style')
+<?php $__env->startSection('style'); ?>
 <link href="/assets/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet">
 <style type="text/css">
     .input {
@@ -9,8 +8,8 @@
         width: 300px;
     }
 </style>
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 
 <div id="content" class="content">
     <!-- begin breadcrumb -->
@@ -99,9 +98,9 @@
                                 <div class="col-md-9">
                                     <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="cate.parent_id" data-live-search="true" data-style="btn-white">
                                         <option v-bind:value="0">顶级权限</option>
-                                        <option v-bind:value="vo.id" v-for="vo in list">@{{vo.name}}</option>
+                                        <option v-bind:value="vo.id" v-for="vo in list">{{vo.name}}</option>
                                     </select>
-                                    @{{list|json}}
+                                    {{list|json}}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -154,7 +153,7 @@
     </div>
     <!-- end row -->
 </div>
-@endsection @section('my-js')
+<?php $__env->stopSection(); ?> <?php $__env->startSection('my-js'); ?>
 <script src="/layer/layer.js"></script>
 <script src="/assets/js/ui-modal-notification.demo.min.js"></script>
 <script src="/assets/plugins/jquery-nestable/jquery.nestable.js"></script>
@@ -173,7 +172,7 @@ var vn = new Vue({
         http: {
             root: '/root',
             headers: {
-                'X-CSRF-TOKEN': "{{csrf_token()}}"
+                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
             }
         },
         data: {
@@ -194,7 +193,7 @@ var vn = new Vue({
                 }
             },
             createCate: function (data){
-                this.$http.post("{{url('/admin/category')}}",data).then(function (response){
+                this.$http.post("<?php echo e(url('/admin/category')); ?>",data).then(function (response){
                     if(response.data.code == 400){
                         layer.msg(response.data.message,{icon: 2});
                     }
@@ -215,14 +214,14 @@ var vn = new Vue({
                 });
             },
             updateCate: function (data){
-                this.$http.put("{{url('/admin/category')}}/"+data.id,data).then(function (response){
+                this.$http.put("<?php echo e(url('/admin/category')); ?>/"+data.id,data).then(function (response){
 
                 }, function (response) {
                     console.log(response)
                 });
             },
             cateList: function(){
-                this.$http.post("{{url('/admin/category/index')}}").then(function (response){
+                this.$http.post("<?php echo e(url('/admin/category/index')); ?>").then(function (response){
                     if(response.data.result.length > 0){
                         this.$set('list',response.data.result)
                     }
@@ -233,4 +232,5 @@ var vn = new Vue({
             }
         }
     });
-</script> @endsection
+</script> <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

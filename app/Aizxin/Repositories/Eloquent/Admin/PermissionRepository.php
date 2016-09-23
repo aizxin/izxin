@@ -207,6 +207,6 @@ class PermissionRepository extends Repository
 	 */
 	public function permissionList()
 	{
-		return sortMenu($this->all(['id','display_name','parent_id'])->toArray());
+		return $this->sortMenu($this->all(['id','display_name','parent_id'])->toArray());
 	}
 }
