@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
         Route::any('category/index', 'CategoryController@index')->name('admin.category.index');
         Route::resource('category','CategoryController');
         // 文章
+        Route::any('article/index', 'ArticleController@index')->name('admin.article.index');
         Route::resource('article','ArticleController');
         // 网站信息
         Route::resource('config','ConfigController');

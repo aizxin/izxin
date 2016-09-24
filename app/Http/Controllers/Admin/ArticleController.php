@@ -69,7 +69,6 @@ class ArticleController extends Controller
      */
     public function upload(Request $request)
     {
-        $response =  $this->service->upload($request);
-        return response()->json($response);
+        return $this->service->upload($request);
     }
 }

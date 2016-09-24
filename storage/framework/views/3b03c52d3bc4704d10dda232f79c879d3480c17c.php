@@ -1,4 +1,4 @@
-@extends('layouts.admin') @section('style')
+ <?php $__env->startSection('style'); ?>
 <link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css">
 <link rel="stylesheet" type="text/css" href="/assets/plugins/editor/css/editormd.min.css">
 <style>
@@ -9,7 +9,7 @@
         width: 500px;
     }
 </style>
-@endsection @section('content')
+<?php $__env->stopSection(); ?> <?php $__env->startSection('content'); ?>
 <div id="content" class="content">
     <!-- begin breadcrumb -->
     <ol class="breadcrumb pull-right">
@@ -59,7 +59,7 @@
                                     <div class="col-md-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                           <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                              <img src="{{asset('assets/img/no-image.png')}}" alt="" /> </div>
+                                              <img src="<?php echo e(asset('assets/img/no-image.png')); ?>" alt="" /> </div>
                                           <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
                                           <div>
                                               <span class="btn purple btn-file">
@@ -112,13 +112,13 @@
                                         <div id="editor"><textarea style="display: none;"></textarea></div>
                                     </div>
                                 </div>
-                                @permission('admin.article.store')
+                                <?php if (\Entrust::can('admin.article.store')) : ?>
                                 <div class="form-group">
                                     <div class="col-md-9 col-md-offset-3">
                                         <button @click="addArticle()" :disabled="$nodeValidation.invalid" type="button" class="btn btn-success btn-lg m-r-5" style="width: 100px">保 存</button>
                                     </div>
                                 </div>
-                                @endpermission
+                                <?php endif; // Entrust::can ?>
                                 <div class="form-group" v-if="msg">
                                     <div class="col-md-9 col-md-offset-3">
                                         <div class="alert alert-danger fade in m-b-15">
@@ -139,11 +139,11 @@
     </div>
     <!-- end row -->
 </div>
-@endsection @section('my-js')
+<?php $__env->stopSection(); ?> <?php $__env->startSection('my-js'); ?>
     <!-- ================== Vue JS ================== -->
     <script src="/layer/layer.js"></script>
-    <script src="{{asset('assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/plugins/editor/js/editormd.min.js')}}" type="text/javascript"></script>
+    <script src="<?php echo e(asset('assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js')); ?>" type="text/javascript"></script>
+    <script src="<?php echo e(asset('assets/plugins/editor/js/editormd.min.js')); ?>" type="text/javascript"></script>
     <!-- ================== END vue JS ================== -->
     <script>
     	$(document).ready(function() {
@@ -158,7 +158,7 @@
                 gotoLine:false,
                 emoji:true,
                 saveHTMLToTextarea:true,
-                path    : "{{asset('assets/plugins/editor/lib')}}/",
+                path    : "<?php echo e(asset('assets/plugins/editor/lib')); ?>/",
                 imageUpload : true,
                 imageUploadURL : '/admin/article/upload'
             });
@@ -178,7 +178,7 @@
             http: {
                 root: '/root',
                 headers: {
-                    'X-CSRF-TOKEN': "{{csrf_token()}}"
+                    'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
                 }
             },
             el: '#addArticle',
@@ -197,4 +197,5 @@
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

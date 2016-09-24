@@ -44,10 +44,10 @@ class ArticleService extends CommonService
     {
         $disk = QiniuStorage::disk('qiniu');
         $fileName = md5($file->getClientOriginalName().time().rand()).'.'.$file->getClientOriginalExtension();
-        $bool = $disk->put(config('admin.global.imagePath').$fileName,file_get_contents($file->getRealPath()));
-        \Log::info('222'.$bool);
+        $bool = $disk->put(config('admin.globals.imagePath').$fileName,file_get_contents($file->getRealPath()));
+        \Log::info($file->getRealPath());
         if ($bool) {
-            $path = $disk->downloadUrl(config('admin.global.imagePath').$fileName);
+            $path = $disk->downloadUrl(config('admin.globals.imagePath').$fileName);
             return $path;
         }
         return '';
@@ -70,8 +70,16 @@ class ArticleService extends CommonService
     {
         if ($request->hasFile('editormd-image-file')) {
             $path = $this->uploadImage($request->file('editormd-image-file'));
-            return ['success'=> 1,'message' => '上传成功','url' => $path];
+            return response()->json([
+                'success' => 1,
+                'message' => '上传成功',
+                'url' => strval($path)
+            ]);
         }
-        return ['success'=> 0,'message' => '失败成功'];
+        return response()->json([
+            'success' => 0,
+            'message' => '失败成功',
+            'url' => '',
+        ]);
     }
 }
