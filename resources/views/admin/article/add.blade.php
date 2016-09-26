@@ -43,15 +43,18 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label ">文章分类:</label>
                                     <div class="col-md-9">
-                                        <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="article.parent_id" data-live-search="true" data-style="btn-white">
-                                        <option value="0">文章分类</option>
+                                        <select class="form-control selectpicker input" id="category_id" data-size="10" v-model="article.category_id" data-live-search="true" data-style="btn-white">
+                                        <option value="0" selected>文章分类</option>
+                                        @foreach($cate as $vo)
+                                        <option value="{{$vo['id']}}">{{$vo['name']}}</option>
+                                        @endforeach
                                     </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">文章标题:</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="article.name" name="name" v-validate:name="{ required: true}" class="form-control input" placeholder="文章标题">
+                                        <input type="text" v-model="article.title" name="title" v-validate:title="{ required: true}" class="form-control input" placeholder="文章标题">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -59,7 +62,7 @@
                                     <div class="col-md-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                           <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                              <img src="{{asset('assets/img/no-image.png')}}" alt="" /> </div>
+                                              <img src="{{asset('assets/img/no-image.png')}}" alt="" id="articleImg"/> </div>
                                           <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
                                           <div>
                                               <span class="btn purple btn-file">
@@ -75,7 +78,7 @@
                                                             <span>更新图片</span>
                                                         </button>
                                                      </span>
-                                                    <input id="upload-input" type="file" name="editormd-image-file" v-model="article.img">
+                                                    <input id="upload-input" type="file" name="editormd-image-file">
                                                 </span>
                                                 <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput">
                                                     <button type="button" class="btn btn-danger delete">
@@ -90,20 +93,16 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="message">简要描述:</label>
                                     <div class="col-md-9">
-                                        <textarea v-model="article.description" name="description" class="form-control input" v-validate:description="{ required: true}" id="message" name="message" rows="4" data-parsley-range="[20,200]"
+                                        <textarea v-model="article.intro" name="intro" class="form-control input" v-validate:intro="{ required: true}" id="message" name="message" rows="4" data-parsley-range="[20,200]"
                                             placeholder="这里填写当前文章的简要描述"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">文章排序:</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="article.sort" name="sort" class="form-control input" placeholder="排序号" v-validate:sort="{ required: true}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">文章状态</label>
                                     <div class="col-md-9">
-                                        <input type="checkbox" v-model="article.is_menu"  data-render="switchery" data-theme="default"  />
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="1"/>置顶
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="2"/>最热
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="3"/>最新
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -148,6 +147,8 @@
     <script>
     	$(document).ready(function() {
     		App.init();
+            FormPlugins.init();
+            FormSliderSwitcher.init();
     	});
          $(function() {
             var editor = editormd('editor',{
@@ -161,17 +162,6 @@
                 path    : "{{asset('assets/plugins/editor/lib')}}/",
                 imageUpload : true,
                 imageUploadURL : '/admin/article/upload'
-            });
-            $("#upload-input").fileinput({
-                maxFileCount: 1, //表示允许同时上传的最大文件个数
-                allowedFileExtensions: ["jpg", "png", "gif"],
-                uploadUrl: "/admin/article/upload", // your upload server url
-                overwriteInitial:false,
-                language: 'zh',
-                enctype: 'multipart/form-data',
-                  // uploadAsync:false,
-            }).on('fileuploaded',function (event, data) {
-                console.log(data.response);
             });
         });
         new Vue({
@@ -190,10 +180,39 @@
             },
             methods: {
                 addArticle: function(){
+                    this.article.category_id = $('#category_id').val();
                     this.article.content_html = $(".editormd-html-textarea").val();
                     this.article.content_mark = $(".editormd-markdown-textarea").val()
-                    console.log(this.article)
-                }
+                    this.article.img = $("#articleImg")[0].src;
+                    if($(".fileinput-preview").find('img').length > 0){
+                        this.article.base64 = $(".fileinput-preview").find('img')[0].src;
+                    }
+                    if(this.article.id != undefined && this.article.id > 0){
+
+                    }else{
+                        this.createArticle(this.article);
+                    }
+                },
+                createArticle: function (data){
+                    this.$http.post("{{url('/admin/article')}}",data).then(function (response){
+                        if(response.data.code == 400){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 422){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 200){
+                            var ii = layer.load();
+                            //此处用setTimeout演示ajax的回调
+                            setTimeout(function(){
+                                layer.close(ii);
+                                window.location.href = "{{url('/admin/article/index')}}";
+                            }, 3000);
+                        }
+                    }, function (response) {
+                        console.log(response)
+                    });
+                },
             }
         });
     </script>

@@ -43,15 +43,18 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label ">文章分类:</label>
                                     <div class="col-md-9">
-                                        <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="article.parent_id" data-live-search="true" data-style="btn-white">
-                                        <option value="0">文章分类</option>
+                                        <select class="form-control selectpicker input" id="category_id" data-size="10" v-model="article.category_id" data-live-search="true" data-style="btn-white">
+                                        <option value="0" selected>文章分类</option>
+                                        <?php foreach($cate as $vo): ?>
+                                        <option value="<?php echo e($vo['id']); ?>"><?php echo e($vo['name']); ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">文章标题:</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="article.name" name="name" v-validate:name="{ required: true}" class="form-control input" placeholder="文章标题">
+                                        <input type="text" v-model="article.title" name="title" v-validate:title="{ required: true}" class="form-control input" placeholder="文章标题">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -59,7 +62,7 @@
                                     <div class="col-md-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                           <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                              <img src="<?php echo e(asset('assets/img/no-image.png')); ?>" alt="" /> </div>
+                                              <img src="<?php echo e(asset('assets/img/no-image.png')); ?>" alt="" id="articleImg"/> </div>
                                           <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
                                           <div>
                                               <span class="btn purple btn-file">
@@ -75,7 +78,7 @@
                                                             <span>更新图片</span>
                                                         </button>
                                                      </span>
-                                                    <input type="file" name="img">
+                                                    <input id="upload-input" type="file" name="editormd-image-file">
                                                 </span>
                                                 <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput">
                                                     <button type="button" class="btn btn-danger delete">
@@ -90,20 +93,16 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="message">简要描述:</label>
                                     <div class="col-md-9">
-                                        <textarea v-model="article.description" name="description" class="form-control input" v-validate:description="{ required: true}" id="message" name="message" rows="4" data-parsley-range="[20,200]"
+                                        <textarea v-model="article.intro" name="intro" class="form-control input" v-validate:intro="{ required: true}" id="message" name="message" rows="4" data-parsley-range="[20,200]"
                                             placeholder="这里填写当前文章的简要描述"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">文章排序:</label>
-                                    <div class="col-md-9">
-                                        <input type="text" v-model="article.sort" name="sort" class="form-control input" placeholder="排序号" v-validate:sort="{ required: true}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">文章状态</label>
                                     <div class="col-md-9">
-                                        <input type="checkbox" v-model="article.is_menu"  data-render="switchery" data-theme="default"  />
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="1"/>置顶
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="2"/>最热
+                                        <input type="radio" v-model="article.status"  data-render="switchery" data-theme="default" v-bind:value="3"/>最新
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -153,16 +152,16 @@
     	});
          $(function() {
             var editor = editormd('editor',{
-              width   : "100%",
-              height  : 640,
-              syncScrolling : "single",
-              toolbarAutoFixed: false,
-              gotoLine:false,
-              emoji:true,
-              saveHTMLToTextarea:true,
-              path    : "<?php echo e(asset('assets/plugins/editor/lib')); ?>/",
-              imageUpload : true,
-              imageUploadURL : '/admin/article/upload'
+                width   : "100%",
+                height  : 640,
+                syncScrolling : "single",
+                toolbarAutoFixed: false,
+                gotoLine:false,
+                emoji:true,
+                saveHTMLToTextarea:true,
+                path    : "<?php echo e(asset('assets/plugins/editor/lib')); ?>/",
+                imageUpload : true,
+                imageUploadURL : '/admin/article/upload'
             });
         });
         new Vue({
@@ -180,17 +179,22 @@
             created: function (){
             },
             methods: {
-                addArticle: function() {
-                    this.article.parent_id = $("#parent_id").val();
-                    this.article.is_menu = this.article.is_menu?1:0;
+                addArticle: function(){
+                    this.article.category_id = $('#category_id').val();
+                    this.article.content_html = $(".editormd-html-textarea").val();
+                    this.article.content_mark = $(".editormd-markdown-textarea").val()
+                    this.article.img = $("#articleImg")[0].src;
+                    if($(".fileinput-preview").find('img').length > 0){
+                        this.article.base64 = $(".fileinput-preview").find('img')[0].src;
+                    }
                     if(this.article.id != undefined && this.article.id > 0){
-                        this.updateNode(this.article);
+
                     }else{
-                        this.createNode(this.article);
+                        this.createArticle(this.article);
                     }
                 },
-                createNode: function (data){
-                    this.$http.post("<?php echo e(url('/admin/permission')); ?>",data).then(function (response){
+                createArticle: function (data){
+                    this.$http.post("<?php echo e(url('/admin/article')); ?>",data).then(function (response){
                         if(response.data.code == 400){
                             this.msg = response.data.message
                         }
@@ -202,33 +206,13 @@
                             //此处用setTimeout演示ajax的回调
                             setTimeout(function(){
                                 layer.close(ii);
-                                window.location.href = "<?php echo e(url('/admin/permission/index')); ?>";
+                                window.location.href = "<?php echo e(url('/admin/article/index')); ?>";
                             }, 3000);
                         }
                     }, function (response) {
                         console.log(response)
                     });
                 },
-                updateNode: function (data){
-                    this.$http.put("<?php echo e(url('/admin/permission/')); ?>/"+data.id,data).then(function (response){
-                        if(response.data.code == 400){
-                            this.msg = response.data.message
-                        }
-                        if(response.data.code == 422){
-                            this.msg = response.data.message
-                        }
-                        if(response.data.code == 200){
-                            var ii = layer.load();
-                            //此处用setTimeout演示ajax的回调
-                            setTimeout(function(){
-                                layer.close(ii);
-                                window.location.href = "<?php echo e(url('/admin/permission/index')); ?>";
-                            }, 3000);
-                        }
-                    }, function (response) {
-                        console.log(response)
-                    });
-                }
             }
         });
     </script>

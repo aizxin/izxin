@@ -37,26 +37,68 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            // return $this->service->findByParent();
+            return $this->service->getArticleList($request);
         }
         return view('admin.article.index');
     }
     public function show($id){
     }
+    /**
+     *  [create 文章添加视图]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:40:38+0800
+     *  @return   [type]                   [description]
+     */
     public function create()
     {
-        return view('admin.article.add');
+        $cate = $this->service->getCate();
+        return view('admin.article.add',compact('cate'));
     }
+    /**
+     *  [store 文章添加操作]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:40:07+0800
+     *  @param    Request                  $request [description]
+     *  @return   [type]                            [description]
+     */
     public function store(Request $request)
     {
+        return $this->service->create($request);
     }
+    /**
+     *  [edit 文章编辑视图]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:41:12+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
     public function edit($id)
     {
     }
-    public function destroy($id)
+    /**
+     *  [update 文章编辑操作]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:41:43+0800
+     *  @param    Request                  $request [description]
+     *  @param    [type]                   $id      [description]
+     *  @return   [type]                            [description]
+     */
+    public function update(Request $request,$id)
     {
     }
-    public function update(Request $request,$id)
+    /**
+     *  [destroy 文章删除]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:42:03+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
+    public function destroy($id)
     {
     }
     /**

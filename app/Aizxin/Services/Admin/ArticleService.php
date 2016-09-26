@@ -3,10 +3,15 @@ namespace Aizxin\Services\Admin;
 
 use Aizxin\Services\CommonService;
 use Aizxin\Repositories\Eloquent\Admin\ArticleRepository;
+use Aizxin\Repositories\Eloquent\Admin\CategoryRepository;
 use Aizxin\Validators\ArticleValidator;
 
 use Prettus\Validator\Exceptions\ValidatorException;
 use Prettus\Validator\Contracts\ValidatorInterface;
+// 引入鉴权类
+use Qiniu\Auth;
+// 引入上传类
+use Qiniu\Storage\UploadManager;
 use zgldh\QiniuStorage\QiniuStorage;
 
 class ArticleService extends CommonService
@@ -20,6 +25,10 @@ class ArticleService extends CommonService
      */
     protected $validator;
     /**
+     * @var CategoryRepository
+     */
+    protected $cate;
+    /**
      *  [__construct description]
      *  izxin.com
      *  @author qingfeng
@@ -27,10 +36,22 @@ class ArticleService extends CommonService
      *  @param    ArticleRepository           $repository [description]
      *  @param    ArticleValidator            $validator  [description]
      */
-    public function __construct(ArticleRepository $repository, ArticleValidator $validator)
+    public function __construct(ArticleRepository $repository, ArticleValidator $validator,CategoryRepository $cate)
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->cate = $cate;
+    }
+    /**
+     *  [getCate 分类列表]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T16:17:46+0800
+     *  @return   [type]                   [description]
+     */
+    public function getCate()
+    {
+        return $this->cate->getCateList();
     }
     /**
      *  [uploadImage 上传图片到七牛]
@@ -45,7 +66,6 @@ class ArticleService extends CommonService
         $disk = QiniuStorage::disk('qiniu');
         $fileName = md5($file->getClientOriginalName().time().rand()).'.'.$file->getClientOriginalExtension();
         $bool = $disk->put(config('admin.globals.imagePath').$fileName,file_get_contents($file->getRealPath()));
-        \Log::info($file->getRealPath());
         if ($bool) {
             $path = $disk->downloadUrl(config('admin.globals.imagePath').$fileName);
             return $path;
@@ -81,5 +101,79 @@ class ArticleService extends CommonService
             'message' => '失败成功',
             'url' => '',
         ]);
+    }
+    /**
+     *  [qiniuBase64 七牛base64上传]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T15:16:34+0800
+     *  @param    [type]                   $base64 [description]
+     *  @return   [type]                           [description]
+     */
+    public function qiniuBase64($base64)
+    {
+        // 构建鉴权对象
+        $auth = new Auth(env('QINIU_AXXESS_KEY'), env('QINIU_SECRET_KEY'));
+        // 生成上传 Token
+        $token = $auth->uploadToken(env('QINIU_BUCKET'));
+        // // 上传到七牛后保存的文件名
+        $key = md5(time()).'.png';
+        // // 初始化 UploadManager 对象并进行文件的上传。
+        $uploadMgr = new UploadManager();
+        // 上传文件到七牛
+        list($ret, $err) = $uploadMgr->putFile($token, $key, $base64['base64']);
+        if ($err !== null) {
+            return false;
+        } else {
+            return "http://".env('QINIU_DOMAINS_DEFAULT')."/".$ret['key'];
+        }
+    }
+    /**
+     *  [create 文章添加与更新]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T16:13:34+0800
+     *  @param    [type]                   $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function create($request)
+    {
+        $data = $request->except('base64');
+        if($request->has('base64')){
+            $img = $this->qiniuBase64($request->only('base64'));
+            if($img == false){
+                return $this->respondWithErrors('上传图片错误',400);
+            }
+            $data['img'] = $img;
+        }
+        try {
+            if(isset($data['id']) && $data['id'] > 0){
+                $this->validator->with( $data )->passesOrFail( ValidatorInterface::RULE_UPDATE );
+                if( $this->repository->update( $data ,$data['id'])){
+                    return $this->respondWithSuccess(1, '修改成功');
+                }
+                return $this->respondWithErrors('修改失败',400);
+            }else{
+                $this->validator->with( $data )->passesOrFail( ValidatorInterface::RULE_CREATE );
+                if( $this->repository->create( $data )){
+                    return $this->respondWithSuccess(1, '添加成功');
+                }
+                return $this->respondWithErrors('添加失败',400);
+            }
+        } catch (ValidatorException $e) {
+            return $this->respondWithErrors( $e->getMessageBag()->first() , 422);
+        }
+    }
+    /**
+     *  [getArticleList 文章列表]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T17:27:59+0800
+     *  @param    [type]                   $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function getArticleList($request)
+    {
+        return $this->respondWithSuccess($this->repository->getArticleList($request), '添加成功');
     }
 }

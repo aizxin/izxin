@@ -12,13 +12,19 @@ class ArticleValidator extends LaravelValidator {
     */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'name' => ['required','unique:categories'],
-            'sort' => ['required'],
+            'title' => ['required','unique:articles'],
+            'category_id' => ['required','numeric'],
+            'img' => ['required'],
+            'content_mark' => ['required'],
+            'intro' => ['required'],
             'status' => ['required'],
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'name' => ['required'],
-            'sort' => ['required'],
+            'title' => ['required'],
+            'category_id' => ['required','numeric'],
+            'img' => ['required'],
+            'intro' => ['required'],
+            'content_mark' => ['required'],
             'status' => ['required'],
         ],
     ];
@@ -27,9 +33,13 @@ class ArticleValidator extends LaravelValidator {
      *  @var [type]
      */
     protected $messages = [
-        'name.required' => '分类必填项',
-        'name.unique' => '分类已经存在',
-        'sort.required' => '排序必填项',
+        'title.required' => '文章标题必填项',
+        'title.unique' => '文章标题已经存在',
         'status.required' => '状态必选项',
+        'category_id.required' => '分类必选项',
+        'category_id.numeric' => '分类必须数字',
+        'img.required' => '封面必选项',
+        'content_mark.required' => '文章内容必填',
+        'intro.required' => '文章简介必填',
 	];
 }

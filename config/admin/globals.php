@@ -5,6 +5,6 @@ return [
 		'cate' => 'cate',
 	],
 	// 七牛图片上传路径
-	'imagePath' => 'aizxin/image/',
+	'imagePath' => 'aizxin/article/',
 ];
 ?>

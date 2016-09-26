@@ -45,11 +45,9 @@
                                         <th class="sorting_asc" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"
                                             style="width: 271px;">编号</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table"
-                                            rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">用户</th>
+                                            rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">标题</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">邮箱</th>
-                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">角色管理</th>
+                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">分类</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
                                             colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
                                     </tr>
@@ -57,17 +55,9 @@
                                 <tbody>
                                     <template v-for="vo in items">
                                         <tr class="gradeA odd" role="row" >
-                                            <td class="sorting_1">@{{vo.id}}</td>
-                                            <td>@{{vo.name}}</td>
-                                            <td>@{{vo.email}}</td>
-                                            <td>
-                                                @permission('admin.article.show')
-                                                <a type="button" class="btn btn-success" @click="userRole(vo.id)" href="#modal-dialog" data-toggle="modal">
-                                                <i class="fa fa-user"></i>
-                                                <span>修改角色</span>
-                                                </a>
-                                                 @endpermission
-                                            </td>
+                                            <td class="sorting_1">@{{$index+1}}</td>
+                                            <td>@{{vo.title}}</td>
+                                            <td>@{{vo.category.name}}</td>
                                             <td>
                                                 @permission('admin.article.edit')
                                                 <a href="{{url('admin/article')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
@@ -128,7 +118,7 @@ var vn = new Vue({
             title:'只能查文章标题'
         },
         created: function () {
-            // this.fetchItems(this.pagination.current_page,this.pageSize,'');
+            this.fetchItems(this.pagination.current_page,this.pageSize,'');
         },
         methods: {
             /**
