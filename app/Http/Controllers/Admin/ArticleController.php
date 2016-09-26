@@ -53,7 +53,8 @@ class ArticleController extends Controller
     public function create()
     {
         $cate = $this->service->getCate();
-        return view('admin.article.add',compact('cate'));
+        $article = json_encode(['id'=>0]);
+        return view('admin.article.add',compact('cate','article'));
     }
     /**
      *  [store 文章添加操作]
@@ -77,6 +78,9 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
+        $cate = $this->service->getCate();
+        $article = $this->service->findById($id);
+        return view('admin.article.add',compact('cate','article'));
     }
     /**
      *  [update 文章编辑操作]
@@ -89,6 +93,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request,$id)
     {
+        return $this->service->create($request);
     }
     /**
      *  [destroy 文章删除]
@@ -100,6 +105,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+        return $this->service->destroy($id);
     }
     /**
      *  [upload markdown 图片上传]

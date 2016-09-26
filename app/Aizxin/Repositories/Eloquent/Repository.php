@@ -137,7 +137,8 @@ abstract class Repository implements RepositoryInterface
 	* @return int
 	*/
 	public function delete($id){
-
+		$model = new $this->model;
+		return $model->destroy($id);
 	}
 	/**
 	* Order collection by a given column

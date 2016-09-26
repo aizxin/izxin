@@ -7,7 +7,7 @@ use Prettus\Validator\LaravelValidator;
 class ArticleValidator extends LaravelValidator {
 
    /**
-    *  [$rules 角色规则]
+    *  [$rules 文章规则]
     *  @var [type]
     */
     protected $rules = [
@@ -29,7 +29,7 @@ class ArticleValidator extends LaravelValidator {
         ],
     ];
     /**
-     *  [$messages 角色错误信息]
+     *  [$messages 文章错误信息]
      *  @var [type]
      */
     protected $messages = [

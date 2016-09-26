@@ -42,4 +42,16 @@ class ArticleRepository extends Repository
 		   	->toArray();
     	return aizxin_paginate($results);
 	}
+	/**
+	 *  [findById 根据Id查询]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-26T20:02:18+0800
+	 *  @param    [type]                   $id [description]
+	 *  @return   [type]                       [description]
+	 */
+	public function findById($id)
+	{
+		return $this->find($id)->toJson();
+	}
 }

@@ -138,7 +138,7 @@ var vn = new Vue({
              *  [destroy 删除文章]
              */
             destroy:function (id){
-                layer.confirm('确认删除文章', {icon: 1, title:'提示'}, function(index){
+                layer.confirm('确认删除文章', {icon: 1, title:'删除文章'}, function(index){
                     vn.$http.delete("{{url('admin/article')}}/"+id).then(function(response){
                         if(response.data.code == 400){
                             layer.close(index);

@@ -12,7 +12,6 @@ class Article extends Model
      */
     public function category()
     {
-        // return $this->belongsTo('Aizxin\Models\Category', 'category_id', 'id')->select('id', 'name');
         return $this->belongsTo('Aizxin\Models\Category', 'category_id', 'id');
     }
 }

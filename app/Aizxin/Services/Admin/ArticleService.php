@@ -176,4 +176,31 @@ class ArticleService extends CommonService
     {
         return $this->respondWithSuccess($this->repository->getArticleList($request), '添加成功');
     }
+    /**
+     *  [findById 根据Id查询]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T20:05:04+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
+    public function findById($id)
+    {
+       return $this->repository->find($id)->toJson();
+    }
+    /**
+     *  [destroy 根据Id删除]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-26T21:16:26+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
+    public function destroy($id)
+    {
+        if($this->repository->delete($id)){
+            return $this->respondWithSuccess(1, '删除成功');
+        }
+        return $this->respondWithErrors('删除失败',400);
+    }
 }
