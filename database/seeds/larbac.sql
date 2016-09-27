@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-23 16:47:40
+Date: 2016-09-27 11:10:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `articles`;
 CREATE TABLE `articles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '文章标题',
-  `category_id` int(11) DEFAULT '0' COMMENT '分类ID',
+  `category_id` varchar(11) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT '分类ID',
   `intro` text COLLATE utf8_unicode_ci NOT NULL COMMENT '文章简介',
   `img` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '文章封面',
   `content_html` text COLLATE utf8_unicode_ci NOT NULL COMMENT '文章内容-html格式',
@@ -32,11 +32,16 @@ CREATE TABLE `articles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `articles_title_unique` (`title`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of articles
 -- ----------------------------
+INSERT INTO `articles` VALUES ('1', '1', '1', '111', 'http://oe3em7ins.bkt.clouddn.com/5b1bc9dc8e0db20a92506affb6f8fef7.png', '', '1111', '1', '2016-09-26 09:08:27', '2016-09-26 09:08:27');
+INSERT INTO `articles` VALUES ('2', '122', '2', '111', 'http://izxin.ngrok.4kb.cn/assets/img/no-image.png', '', '1111', '1', '2016-09-26 09:11:02', '2016-09-26 09:11:02');
+INSERT INTO `articles` VALUES ('3', '122333', '2', '111', 'http://izxin.ngrok.4kb.cn/assets/img/no-image.png', '<p>1111</p>\n', '1111', '1', '2016-09-26 09:13:45', '2016-09-26 09:13:45');
+INSERT INTO `articles` VALUES ('4', 'vue', '1', 'vue', 'http://izxin.ngrok.4kb.cn/assets/img/no-image.png', '<p>vue</p>\n', 'vue', '1', '2016-09-26 09:15:12', '2016-09-26 09:15:12');
+INSERT INTO `articles` VALUES ('5', 'java', '2', 'java', 'http://oe3em7ins.bkt.clouddn.com/6466b8482c45b6359552f2db0dcc71b2.png', '<p>java</p>\n', 'java', '3', '2016-09-26 09:16:25', '2016-09-26 09:16:25');
 
 -- ----------------------------
 -- Table structure for categories
@@ -170,7 +175,7 @@ INSERT INTO `permissions` VALUES ('25', '20', 'admin.permission.destroy', '权�
 INSERT INTO `permissions` VALUES ('26', '0', 'admin.system.manage', '系统管理', '系统管理', '1', 'fa fa-gear', '4', '2016-09-20 14:28:30', '2016-09-20 15:08:40');
 INSERT INTO `permissions` VALUES ('27', '0', 'admin.article.manage', '文章管理', '文章管理', '1', 'fa fa-file-text', '3', '2016-09-20 14:43:37', '2016-09-20 15:08:58');
 INSERT INTO `permissions` VALUES ('28', '27', 'admin.category.index', '分类列表', '分类列表', '1', null, '1', '2016-09-20 15:03:56', '2016-09-20 15:03:56');
-INSERT INTO `permissions` VALUES ('29', '27', 'admin.article.index', '文章列表', '文章列表', '1', null, '2', '2016-09-20 15:05:10', '2016-09-20 15:05:10');
+INSERT INTO `permissions` VALUES ('29', '27', 'admin.article.index', '文章列表', '文章列表', '1', null, '3', '2016-09-20 15:05:10', '2016-09-23 08:48:35');
 INSERT INTO `permissions` VALUES ('30', '0', 'admin.website.manage', '网站管理', '网站管理', '1', 'fa fa-windows', '2', '2016-09-20 15:07:58', '2016-09-20 15:07:58');
 INSERT INTO `permissions` VALUES ('31', '30', 'admin.config.index', '基本配置', '基本配置', '1', '', '1', '2016-09-20 15:10:36', '2016-09-20 15:10:36');
 INSERT INTO `permissions` VALUES ('32', '28', 'admin.category.create', '新增分类视图', '新增分类视图', '0', null, '1', '2016-09-22 05:39:40', '2016-09-22 05:41:31');
@@ -236,6 +241,11 @@ INSERT INTO `permission_role` VALUES ('33', '1');
 INSERT INTO `permission_role` VALUES ('34', '1');
 INSERT INTO `permission_role` VALUES ('35', '1');
 INSERT INTO `permission_role` VALUES ('36', '1');
+INSERT INTO `permission_role` VALUES ('37', '1');
+INSERT INTO `permission_role` VALUES ('38', '1');
+INSERT INTO `permission_role` VALUES ('39', '1');
+INSERT INTO `permission_role` VALUES ('40', '1');
+INSERT INTO `permission_role` VALUES ('41', '1');
 
 -- ----------------------------
 -- Table structure for roles
