@@ -58,5 +58,10 @@ class Kernel extends HttpKernel
         'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
         'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+
+        // 跨越
+        'cors' => \App\Http\Middleware\CorsMiddleware::class,
+        // 验证
+        'jwt.auth' => \App\Http\Middleware\AuthJwtMiddleware::class,
     ];
 }

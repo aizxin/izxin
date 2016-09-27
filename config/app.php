@@ -165,6 +165,11 @@ return [
         // 七牛
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
 
+        // dingo/api
+        // Dingo\Api\Provider\LaravelServiceProvider::class,
+        // tymon/jwt-auth
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
     ],
 
     /*
@@ -213,6 +218,9 @@ return [
 
         //权限
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        // tymon/jwt-auth
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
     ],
 
