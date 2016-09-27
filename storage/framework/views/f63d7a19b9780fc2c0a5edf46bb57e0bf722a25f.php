@@ -177,6 +177,11 @@
                 msg:''
             },
             created: function (){
+                this.$set('article',<?php echo $article; ?>)
+                if(this.article.id > 0){
+                    $("#articleImg").attr('src',this.article.img);
+                    $("#editor").find('textarea').html(this.article.content_mark);
+                }
             },
             methods: {
                 addArticle: function(){
@@ -188,31 +193,49 @@
                         this.article.base64 = $(".fileinput-preview").find('img')[0].src;
                     }
                     if(this.article.id != undefined && this.article.id > 0){
-
+                        this.updateArticle(this.article);
                     }else{
                         this.createArticle(this.article);
                     }
                 },
                 createArticle: function (data){
                     this.$http.post("<?php echo e(url('/admin/article')); ?>",data).then(function (response){
-                        if(response.data.code == 400){
-                            this.msg = response.data.message
-                        }
-                        if(response.data.code == 422){
-                            this.msg = response.data.message
-                        }
-                        if(response.data.code == 200){
-                            var ii = layer.load();
-                            //此处用setTimeout演示ajax的回调
-                            setTimeout(function(){
-                                layer.close(ii);
-                                window.location.href = "<?php echo e(url('/admin/article/index')); ?>";
-                            }, 3000);
-                        }
+                        this.callback(response);
                     }, function (response) {
                         console.log(response)
                     });
                 },
+                updateArticle: function (data){
+                    this.$http.put("<?php echo e(url('/admin/article')); ?>/"+data.id,data).then(function (response){
+                        this.callback(response);
+                    }, function (response) {
+                        console.log(response)
+                    });
+                },
+                /**
+                 *  [callback 返回响应]
+                 */
+                callback: function(response){
+                    if(response.data.code == 400){
+                        layer.msg(response.data.message,{icon: 2});
+                    }
+                    if(response.data.code == 422){
+                        layer.msg(response.data.message,{icon: 2});
+                    }
+                    if(response.data.code == 200){
+                        var ii = layer.load();
+                        //此处用setTimeout演示ajax的回调
+                        setTimeout(function(){
+                            layer.close(ii);
+                            layer.msg(response.data.message,{
+                              icon: 1,
+                              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                window.location.href = "<?php echo e(url('/admin/article/index')); ?>";
+                            });
+                        }, 3000);
+                    }
+                }
             }
         });
     </script>

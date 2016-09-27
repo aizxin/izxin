@@ -44,8 +44,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
 
 // pc端路由组
 Route::group(['namespace' => 'Home', 'middleware'=>'web'], function () {
-
     Route::get('/', 'IndexController@index')->name('index');
-
 });
 
