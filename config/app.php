@@ -166,7 +166,7 @@ return [
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
 
         // dingo/api
-        // Dingo\Api\Provider\LaravelServiceProvider::class,
+        Dingo\Api\Provider\LaravelServiceProvider::class,
         // tymon/jwt-auth
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 

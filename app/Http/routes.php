@@ -47,3 +47,10 @@ Route::group(['namespace' => 'Home', 'middleware'=>'web'], function () {
     Route::get('/', 'IndexController@index')->name('index');
 });
 
+// Api路由
+$api = app('Dingo\Api\Routing\Router');
+
+// 配置api版本和路由
+$api->version('v1', ['namespace' => 'App\Http\Api\V1\Controllers'], function ($api) {
+    $api->get('article.api', 'ArticleController@index');
+});

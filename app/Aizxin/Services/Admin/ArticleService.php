@@ -177,6 +177,17 @@ class ArticleService extends CommonService
         return $this->respondWithSuccess($this->repository->getArticleList($request), '添加成功');
     }
     /**
+     *  [getArticle api文章列表]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-29T11:33:18+0800
+     *  @return   [type]                   [description]
+     */
+    public function getArticle()
+    {
+        return $this->respondWithSuccess($this->repository->all(), '添加成功');
+    }
+    /**
      *  [findById 根据Id查询]
      *  izxin.com
      *  @author qingfeng

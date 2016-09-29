@@ -28,7 +28,7 @@ class ArticleController extends Controller
         $this->service = $service;
     }
     /**
-     *  [index 网站信息]
+     *  [index 文章]
      *  izxin.com
      *  @author qingfeng
      *  @DateTime 2016-09-19T10:29:18+0800
