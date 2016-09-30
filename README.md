@@ -15,7 +15,7 @@ laravel 5.2.*
 
 - 配置 `.env` 中数据库连接信息
 
-- 执行 `php artisan key`
+- 执行 `php artisan key:generate`
 
 - 数据库  `php artisan db:seed`
 
