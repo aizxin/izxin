@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function index()
     {
         
-        dd(\JWTAuth::fromUser(User::find(3)));
-        // return view('welcome');
+        // dd(\JWTAuth::fromUser(User::find(3)));
+        return view('welcome');
     }
 }
